@@ -29,6 +29,22 @@ function tradepulse_setup() {
 }
 add_action( 'after_setup_theme', 'tradepulse_setup' );
 
+/**
+ * Register widget areas
+ */
+function tradepulse_widgets_init() {
+    register_sidebar( array(
+        'name'          => esc_html__( 'Front Page Widgets', 'tradepulse' ),
+        'id'            => 'front-page-widgets',
+        'description'   => esc_html__( 'Widgets displayed on the front page', 'tradepulse' ),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ) );
+}
+add_action( 'widgets_init', 'tradepulse_widgets_init' );
+
 function tradepulse_assets() {
     wp_enqueue_style( 'tradepulse-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap', array(), null );
     wp_enqueue_style( 'tradepulse-style', get_stylesheet_uri(), array( 'tradepulse-fonts' ), wp_get_theme()->get( 'Version' ) );

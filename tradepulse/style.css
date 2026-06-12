@@ -258,7 +258,8 @@ a:hover {
   background-image:
     linear-gradient(90deg, rgba(10, 17, 21, 0.94) 0%, rgba(10, 17, 21, 0.82) 42%, rgba(10, 17, 21, 0.34) 100%),
     linear-gradient(180deg, rgba(10, 17, 21, 0.2), rgba(10, 17, 21, 0.72)),
-    url("assets/images/tradepulse-hero.webp");
+    url("assets/images/tradepulse-hero.webp"),
+    url("assets/images/tradepulse-hero.svg");
   background-size: cover;
   background-position: center right;
   transform: scale(1.02);
