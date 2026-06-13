@@ -1,6 +1,6 @@
 <?php
 /**
- * Top prop firms page.
+ * Top prop firms comparison page.
  *
  * @package TradePulse
  */
@@ -8,91 +8,66 @@
 get_header();
 
 $top_firms = array(
-	array(
-		'name'     => 'FTMO',
-		'logo'     => 'ftmo.svg',
-		'label'    => __( 'Best established CFD choice', 'tradepulse' ),
-		'markets'  => __( 'Forex, indices, commodities, crypto CFDs', 'tradepulse' ),
-		'program'  => __( '1-Step or 2-Step', 'tradepulse' ),
-		'split'    => __( '80% to 90%', 'tradepulse' ),
-		'capital'  => __( 'Up to $400K before scaling', 'tradepulse' ),
-		'why'      => __( 'The strongest all-round combination of operating history, transparent documentation, structured evaluation, and established reward processing.', 'tradepulse' ),
-		'caution'  => __( 'Check Standard versus Swing restrictions before choosing an account.', 'tradepulse' ),
-		'url'      => 'https://ftmo.com/en/how-it-works/',
-	),
-	array(
-		'name'     => 'The5ers',
-		'logo'     => 'the5ers.svg',
-		'label'    => __( 'Best for long-term scaling', 'tradepulse' ),
-		'markets'  => __( 'Forex and CFDs', 'tradepulse' ),
-		'program'  => __( 'High Stakes and other models', 'tradepulse' ),
-		'split'    => __( '80% scaling up to 100%', 'tradepulse' ),
-		'capital'  => __( 'Program-dependent scaling', 'tradepulse' ),
-		'why'      => __( 'A compelling option for patient forex traders who prioritize unlimited evaluation time and long-term account growth.', 'tradepulse' ),
-		'caution'  => __( 'The product lineup has different targets and loss rules; compare the exact model.', 'tradepulse' ),
-		'url'      => 'https://the5ers.com/high-stakes/',
-	),
-	array(
-		'name'     => 'FundedNext',
-		'logo'     => 'fundednext.svg',
-		'label'    => __( 'Best variety of challenge models', 'tradepulse' ),
-		'markets'  => __( 'CFDs and futures programs', 'tradepulse' ),
-		'program'  => __( 'Stellar models and Futures', 'tradepulse' ),
-		'split'    => __( 'Advertised up to 95%', 'tradepulse' ),
-		'capital'  => __( 'Advertised up to $300K simulated', 'tradepulse' ),
-		'why'      => __( 'Broad program choice and flexible structures make it easier to match an evaluation to a trader’s preferred style.', 'tradepulse' ),
-		'caution'  => __( 'Complex model and add-on choices require more careful rule checking.', 'tradepulse' ),
-		'url'      => 'https://fundednext.com/package-comparison',
-	),
-	array(
-		'name'     => 'Topstep',
-		'logo'     => 'topstep.svg',
-		'label'    => __( 'Best dedicated futures specialist', 'tradepulse' ),
-		'markets'  => __( 'Futures only', 'tradepulse' ),
-		'program'  => __( 'Trading Combine', 'tradepulse' ),
-		'split'    => __( '90% trader share', 'tradepulse' ),
-		'capital'  => __( '$50K, $100K, and $150K paths', 'tradepulse' ),
-		'why'      => __( 'A focused futures ecosystem with a long operating history, education, and a progression toward a live funded account.', 'tradepulse' ),
-		'caution'  => __( 'Monthly fees and payout qualification rules should be reviewed carefully.', 'tradepulse' ),
-		'url'      => 'https://www.topstep.com/our-program',
-	),
+	array( 'name' => 'FTMO', 'logo' => 'ftmo.svg', 'markets' => 'Forex & CFDs', 'evaluation' => '1-Step / 2-Step', 'capital' => 'Up to $400K', 'split' => '80% - 90%', 'best' => 'Established all-rounder', 'url' => 'https://ftmo.com/en/how-it-works/' ),
+	array( 'name' => 'The5ers', 'logo' => 'the5ers.svg', 'markets' => 'Forex & CFDs', 'evaluation' => 'Multiple models', 'capital' => 'Scaling programs', 'split' => 'Up to 100%', 'best' => 'Long-term scaling', 'url' => 'https://the5ers.com/high-stakes/' ),
+	array( 'name' => 'FundedNext', 'logo' => 'fundednext.svg', 'markets' => 'CFDs & Futures', 'evaluation' => 'Stellar models', 'capital' => 'Up to $300K', 'split' => 'Up to 95%', 'best' => 'Program variety', 'url' => 'https://fundednext.com/package-comparison' ),
+	array( 'name' => 'Topstep', 'logo' => 'topstep.svg', 'markets' => 'Futures', 'evaluation' => 'Trading Combine', 'capital' => '$50K - $150K', 'split' => '90%', 'best' => 'Futures specialists', 'url' => 'https://www.topstep.com/our-program' ),
+	array( 'name' => 'E8 Markets', 'logo' => 'e8-markets.svg', 'markets' => 'Forex, Futures & Crypto', 'evaluation' => 'Signature / One / Pro', 'capital' => 'Up to $1M', 'split' => 'Up to 100%', 'best' => 'Flexible SimFi models', 'url' => 'https://e8markets.com/' ),
+	array( 'name' => 'FundingPips', 'logo' => 'fundingpips.svg', 'markets' => 'FX, Metals & Crypto', 'evaluation' => '1-Step / 2-Step', 'capital' => '$5K - $100K', 'split' => 'Up to 100%', 'best' => 'Flexible reward cycles', 'url' => 'https://fundingpips.com/' ),
+	array( 'name' => 'Alpha Futures', 'logo' => 'alpha-futures.svg', 'markets' => 'Futures', 'evaluation' => 'One-Step', 'capital' => '$25K - $150K', 'split' => '90%', 'best' => 'Simple futures path', 'url' => 'https://alpha-futures.com/' ),
+	array( 'name' => 'Funded Trading Plus', 'logo' => 'funded-trading-plus.svg', 'markets' => 'Forex & CFDs', 'evaluation' => '1-Step / 2-Step', 'capital' => 'Scale to $2.5M', 'split' => '90%', 'best' => 'High scaling ceiling', 'url' => 'https://www.fundedtradingplus.com/' ),
 );
 ?>
 
-<main id="primary" class="firm-page firm-page--dark">
-
-
+<main id="primary" class="firm-page firm-page--dark top-firms-page">
 	<section class="section firm-rankings">
 		<div class="wrap">
-			<div class="section-heading firm-dashboard-heading">
+			<header class="top-firms-heading">
 				<div>
-					<span class="firm-dashboard-heading__icon firm-dashboard-heading__icon--trophy" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v3h4v3c0 3.3-2.4 6-5.5 6.5A6 6 0 0 1 13 18v2h4v2H7v-2h4v-2a6 6 0 0 1-2.5-2.5A6.6 6.6 0 0 1 3 9V6h4zm10 5v5.2A4.3 4.3 0 0 0 19 9V8zM5 8v1a4.3 4.3 0 0 0 2 4.2V8z"/></svg></span>
-					<span class="eyebrow"><?php esc_html_e( 'Editor selections', 'tradepulse' ); ?></span>
-					<h2><?php esc_html_e( 'Best Prop Firm Coverage', 'tradepulse' ); ?></h2>
+					<span><?php esc_html_e( 'TradePulse comparison desk', 'tradepulse' ); ?></span>
+					<h1><?php esc_html_e( 'Top Prop Firms', 'tradepulse' ); ?></h1>
 				</div>
-				<p><span class="live-dot"></span><?php esc_html_e( 'Rankings verified June 13, 2026', 'tradepulse' ); ?></p>
+				<p><i aria-hidden="true"></i><?php esc_html_e( 'Program overview updated June 13, 2026', 'tradepulse' ); ?></p>
+			</header>
+
+			<div class="prop-table-shell">
+				<div class="prop-table-glow" aria-hidden="true"></div>
+				<p class="prop-table-swipe" aria-hidden="true"><span>&larr;</span><?php esc_html_e( 'Swipe to compare', 'tradepulse' ); ?><span>&rarr;</span></p>
+				<div class="prop-table-scroll" tabindex="0" aria-label="<?php esc_attr_e( 'Scrollable top prop firm comparison', 'tradepulse' ); ?>">
+					<table class="prop-firm-table">
+						<thead>
+							<tr>
+								<th scope="col"><?php esc_html_e( 'Rank', 'tradepulse' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Firm', 'tradepulse' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Markets', 'tradepulse' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Evaluation', 'tradepulse' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Account Range', 'tradepulse' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Profit Share', 'tradepulse' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Best For', 'tradepulse' ); ?></th>
+								<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Firm website', 'tradepulse' ); ?></span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $top_firms as $index => $firm ) : ?>
+								<tr class="prop-firm-row prop-firm-row--<?php echo esc_attr( ( $index % 4 ) + 1 ); ?>">
+									<td data-label="<?php esc_attr_e( 'Rank', 'tradepulse' ); ?>"><span class="prop-rank"><i aria-hidden="true">#</i><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span></td>
+									<th scope="row" data-label="<?php esc_attr_e( 'Firm', 'tradepulse' ); ?>">
+										<span class="prop-firm-name"><span><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/firms/' . $firm['logo'] ); ?>" alt=""></span><strong><?php echo esc_html( $firm['name'] ); ?></strong></span>
+									</th>
+									<td data-label="<?php esc_attr_e( 'Markets', 'tradepulse' ); ?>"><?php echo esc_html( $firm['markets'] ); ?></td>
+									<td data-label="<?php esc_attr_e( 'Evaluation', 'tradepulse' ); ?>"><?php echo esc_html( $firm['evaluation'] ); ?></td>
+									<td data-label="<?php esc_attr_e( 'Account Range', 'tradepulse' ); ?>"><?php echo esc_html( $firm['capital'] ); ?></td>
+									<td data-label="<?php esc_attr_e( 'Profit Share', 'tradepulse' ); ?>"><strong class="prop-split"><?php echo esc_html( $firm['split'] ); ?></strong></td>
+									<td data-label="<?php esc_attr_e( 'Best For', 'tradepulse' ); ?>"><span class="prop-best"><?php echo esc_html( $firm['best'] ); ?></span></td>
+									<td><a class="prop-table-action" href="<?php echo esc_url( $firm['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View', 'tradepulse' ); ?><span aria-hidden="true">&rarr;</span></a></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
-			<div class="firm-ranking-list">
-				<?php foreach ( $top_firms as $index => $firm ) : ?>
-					<article class="firm-ranking-card firm-ranking-card--data firm-ranking-card--<?php echo esc_attr( $index + 1 ); ?>">
-						<div class="firm-ranking-card__rank"><span class="rank-trophy" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v3h4v3c0 3.3-2.4 6-5.5 6.5A6 6 0 0 1 13 18v2h4v2H7v-2h4v-2a6 6 0 0 1-2.5-2.5A6.6 6.6 0 0 1 3 9V6h4zm10 5v5.2A4.3 4.3 0 0 0 19 9V8zM5 8v1a4.3 4.3 0 0 0 2 4.2V8z"/></svg></span><strong><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></strong></div>
-						<div class="firm-ranking-card__identity"><span><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/firms/' . $firm['logo'] ); ?>" alt="<?php echo esc_attr( $firm['name'] ); ?>"></span><div><small><?php echo esc_html( $firm['label'] ); ?></small><h3><?php echo esc_html( $firm['name'] ); ?></h3><span class="mini-rating">★ ★ ★ ★ ★</span></div></div>
-						<div class="firm-ranking-card__content">
-							<p><?php echo esc_html( $firm['why'] ); ?></p>
-							<div class="firm-data-points">
-								<span><small><?php esc_html_e( 'Markets', 'tradepulse' ); ?></small><?php echo esc_html( $firm['markets'] ); ?></span>
-								<span><small><?php esc_html_e( 'Program', 'tradepulse' ); ?></small><?php echo esc_html( $firm['program'] ); ?></span>
-								<span><small><?php esc_html_e( 'Profit share', 'tradepulse' ); ?></small><?php echo esc_html( $firm['split'] ); ?></span>
-								<span><small><?php esc_html_e( 'Account range', 'tradepulse' ); ?></small><?php echo esc_html( $firm['capital'] ); ?></span>
-							</div>
-							<p class="firm-ranking-card__caution"><strong><?php esc_html_e( 'Before buying:', 'tradepulse' ); ?></strong> <?php echo esc_html( $firm['caution'] ); ?></p>
-						</div>
-						<a class="firm-ranking-card__action" href="<?php echo esc_url( $firm['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Check Terms', 'tradepulse' ); ?><span aria-hidden="true">&rarr;</span></a>
-					</article>
-				<?php endforeach; ?>
-			</div>
-			<p class="research-note"><?php esc_html_e( 'This is an editorial ranking based on transparency, track record, program structure, trader fit, and public feedback. It is not a guarantee of funding or payout. Always verify current rules and regional eligibility.', 'tradepulse' ); ?></p>
+			<p class="research-note"><?php esc_html_e( 'Program terms, account sizes, reward shares, eligibility, and platform availability can change. Confirm the current rules on each firm\'s official website before purchasing an evaluation.', 'tradepulse' ); ?></p>
 		</div>
 	</section>
 </main>
