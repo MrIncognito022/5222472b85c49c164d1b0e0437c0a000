@@ -14,21 +14,21 @@ if ( ! empty( $latest ) ) {
 	}
 }
 if ( ! $hero_bg_url ) {
-	$hero_bg_url = esc_url( get_template_directory_uri() . '/assets/images/tradepulse-hero.webp' );
+	$hero_bg_url = get_template_directory_uri() . '/assets/images/tradepulse-hero.svg';
 }
 ?>
 
 <main id="primary" class="site-main">
 	<section class="hero hero--media">
-		<div class="hero__background" aria-hidden="true" style="background-image: url('<?php echo esc_url( $hero_bg_url ); ?>');"></div>
+		<div class="hero__background" aria-hidden="true" style="--hero-image: url('<?php echo esc_url( $hero_bg_url ); ?>');"></div>
 
 		<div class="hero__inner">
 			<div class="hero__content">
 				<span class="eyebrow">Markets, charts and risk</span>
 
-				<h1><?php echo esc_html( get_bloginfo('name') ); ?></h1>
+				<h1>Trading analysis written for the next decision.</h1>
 
-				<p class="hero__lede"><?php echo esc_html( get_bloginfo('description') ); ?></p>
+				<p class="hero__lede">Concise market notes, technical setups and macro context for active traders who want a clear plan before the session starts.</p>
 
 				<div class="hero__actions">
 					<a class="button button--primary" href="#latest">Read Latest Posts</a>
@@ -68,26 +68,11 @@ if ( ! $hero_bg_url ) {
 
 			<div class="grid grid--two">
 				<?php
-				$tp_query = new WP_Query(array('posts_per_page' => 6));
+				$tp_query = new WP_Query( array( 'posts_per_page' => 6 ) );
 				if ( $tp_query->have_posts() ) :
-					while ( $tp_query->have_posts() ) : $tp_query->the_post();
-						$thumb = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(),'medium') : get_template_directory_uri() . '/assets/images/post-fallback.webp';
-						?>
-						<article class="post-card will-reveal is-visible">
-							<a class="post-card__image" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr(get_the_title()); ?>">
-								<img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-							</a>
-							<div class="post-card__body">
-								<div class="post-card__meta">
-									<span><?php echo get_the_category_list(', '); ?></span>
-									<span><?php echo get_the_date(); ?></span>
-								</div>
-								<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-								<p><?php echo wp_strip_all_tags( wp_trim_words( get_the_excerpt() ?: get_the_content(), 28 ) ); ?></p>
-								<a class="read-more-link" href="<?php the_permalink(); ?>">Read analysis</a>
-							</div>
-						</article>
-						<?php
+					while ( $tp_query->have_posts() ) :
+						$tp_query->the_post();
+						tradepulse_card();
 					endwhile;
 				else :
 					?>

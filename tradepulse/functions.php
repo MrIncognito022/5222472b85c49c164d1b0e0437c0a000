@@ -13,7 +13,10 @@ function tradepulse_setup() {
     load_theme_textdomain( 'tradepulse', get_template_directory() . '/languages' );
 
     add_theme_support( 'title-tag' );
-    add_theme_support( 'post-thumbnails' ); // Enable default WordPress sizes
+    add_theme_support( 'post-thumbnails' );
+    add_theme_support( 'automatic-feed-links' );
+    add_theme_support( 'responsive-embeds' );
+    add_theme_support( 'align-wide' );
 
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
     add_theme_support( 'custom-logo', array(
@@ -82,7 +85,7 @@ function tradepulse_featured_image( $post_id = null, $size = 'medium' ) {
         return;
     }
 
-    $fallback = get_template_directory_uri() . '/assets/images/post-fallback.webp';
+    $fallback = get_template_directory_uri() . '/assets/images/post-fallback.svg';
     echo '<img src="' . esc_url( $fallback ) . '" alt="' . esc_attr__( 'Trading market chart illustration', 'tradepulse' ) . '">';
 }
 
@@ -90,7 +93,7 @@ function tradepulse_card( $post_id = null, $large = false ) {
     $post_id = $post_id ? $post_id : get_the_ID();
     $classes = 'post-card' . ( $large ? ' post-card--large' : '' );
     ?>
-    <article class="<?php echo esc_attr( $classes ); ?>">
+    <article <?php post_class( $classes, $post_id ); ?>>
         <a class="post-card__image" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" aria-label="<?php echo esc_attr( get_the_title( $post_id ) ); ?>">
             <?php tradepulse_featured_image( $post_id, $large ? 'large' : 'medium' ); ?>
         </a>
@@ -109,8 +112,28 @@ function tradepulse_card( $post_id = null, $large = false ) {
 function tradepulse_fallback_menu() {
     $blog_url = get_option( 'page_for_posts' ) ? get_permalink( get_option( 'page_for_posts' ) ) : home_url( '/' );
 
-    echo '<ul>';
+    echo '<ul id="primary-menu">';
     echo '<li><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', 'tradepulse' ) . '</a></li>';
     echo '<li><a href="' . esc_url( $blog_url ) . '">' . esc_html__( 'Blog', 'tradepulse' ) . '</a></li>';
     echo '</ul>';
 }
+
+/**
+ * Remove redundant archive label prefixes from headings.
+ */
+function tradepulse_archive_title( $title ) {
+    if ( is_category() ) {
+        return single_cat_title( '', false );
+    }
+
+    if ( is_tag() ) {
+        return single_tag_title( '', false );
+    }
+
+    if ( is_author() ) {
+        return get_the_author();
+    }
+
+    return $title;
+}
+add_filter( 'get_the_archive_title', 'tradepulse_archive_title' );

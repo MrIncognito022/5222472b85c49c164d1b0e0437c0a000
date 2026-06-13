@@ -38,12 +38,17 @@
 		</a>
 
 		<nav class="main-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'tradepulse' ); ?>">
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu">
+				<span class="menu-toggle__icon" aria-hidden="true"></span>
+				<span><?php esc_html_e( 'Menu', 'tradepulse' ); ?></span>
+			</button>
 			<?php
 			wp_nav_menu( array(
 				'theme_location' => 'primary',
 				'container'      => false,
 				'fallback_cb'    => 'tradepulse_fallback_menu',
 				'depth'          => 1,
+				'menu_id'        => 'primary-menu',
 			) );
 			?>
 		</nav>

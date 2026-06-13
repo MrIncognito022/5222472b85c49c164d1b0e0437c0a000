@@ -1,4 +1,21 @@
 (function(){
+  var header = document.querySelector('.site-header');
+  var menuToggle = document.querySelector('.menu-toggle');
+  var navigation = document.querySelector('.main-navigation');
+
+  function updateHeader() {
+    if (header) {
+      header.classList.toggle('is-scrolled', window.scrollY > 12);
+    }
+  }
+
+  if (menuToggle && navigation) {
+    menuToggle.addEventListener('click', function(){
+      var isOpen = navigation.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
   // Reveal elements without relying on heavy frameworks
   function reveal() {
     document.querySelectorAll('.will-reveal').forEach(function(el){
@@ -16,8 +33,10 @@
 
   // Run on DOM ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function(){ reveal(); updateMarketValues(); });
+    document.addEventListener('DOMContentLoaded', function(){ reveal(); updateMarketValues(); updateHeader(); });
   } else {
-    reveal(); updateMarketValues();
+    reveal(); updateMarketValues(); updateHeader();
   }
+
+  window.addEventListener('scroll', updateHeader, { passive: true });
 })();
