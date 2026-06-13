@@ -33,6 +33,45 @@ function tradepulse_setup() {
 add_action( 'after_setup_theme', 'tradepulse_setup' );
 
 /**
+ * Register reviews as simple editorial posts.
+ */
+function tradepulse_register_review_post_type() {
+    register_post_type( 'review', array(
+        'labels' => array(
+            'name'               => __( 'Reviews', 'tradepulse' ),
+            'singular_name'      => __( 'Review', 'tradepulse' ),
+            'menu_name'          => __( 'Reviews', 'tradepulse' ),
+            'add_new'            => __( 'Add New', 'tradepulse' ),
+            'add_new_item'       => __( 'Add New Review', 'tradepulse' ),
+            'edit_item'          => __( 'Edit Review', 'tradepulse' ),
+            'new_item'           => __( 'New Review', 'tradepulse' ),
+            'view_item'          => __( 'View Review', 'tradepulse' ),
+            'all_items'          => __( 'All Reviews', 'tradepulse' ),
+            'search_items'       => __( 'Search Reviews', 'tradepulse' ),
+            'not_found'          => __( 'No reviews found.', 'tradepulse' ),
+            'not_found_in_trash' => __( 'No reviews found in Trash.', 'tradepulse' ),
+        ),
+        'public'       => true,
+        'show_in_rest' => true,
+        'menu_icon'    => 'dashicons-welcome-write-blog',
+        'has_archive'  => false,
+        'rewrite'      => array( 'slug' => 'reviews', 'with_front' => false ),
+        'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'author', 'revisions' ),
+    ) );
+}
+add_action( 'init', 'tradepulse_register_review_post_type' );
+
+function tradepulse_maybe_flush_review_rewrites() {
+    if ( '1.0' === get_option( 'tradepulse_simple_review_rewrite_version' ) ) {
+        return;
+    }
+
+    flush_rewrite_rules();
+    update_option( 'tradepulse_simple_review_rewrite_version', '1.0' );
+}
+add_action( 'admin_init', 'tradepulse_maybe_flush_review_rewrites' );
+
+/**
  * Create the theme's core landing pages and post categories once.
  */
 function tradepulse_create_content_pages() {
@@ -473,6 +512,26 @@ function tradepulse_card( $post_id = null, $large = false ) {
             <h3><a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></a></h3>
             <p><?php echo esc_html( get_the_excerpt( $post_id ) ); ?></p>
             <a class="read-more-link" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>"><?php esc_html_e( 'Read analysis', 'tradepulse' ); ?></a>
+        </div>
+    </article>
+    <?php
+}
+
+function tradepulse_review_card( $post_id = null ) {
+    $post_id = $post_id ? $post_id : get_the_ID();
+    ?>
+    <article <?php post_class( 'post-card review-post-card', $post_id ); ?>>
+        <a class="post-card__image" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" aria-label="<?php echo esc_attr( get_the_title( $post_id ) ); ?>">
+            <?php tradepulse_featured_image( $post_id, 'medium' ); ?>
+        </a>
+        <div class="post-card__body">
+            <div class="post-card__meta">
+                <span><?php esc_html_e( 'Prop Firm Review', 'tradepulse' ); ?></span>
+                <span><?php echo esc_html( get_the_date( '', $post_id ) ); ?></span>
+            </div>
+            <h3><a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></a></h3>
+            <p><?php echo esc_html( get_the_excerpt( $post_id ) ); ?></p>
+            <a class="read-more-link" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>"><?php esc_html_e( 'Read review', 'tradepulse' ); ?></a>
         </div>
     </article>
     <?php

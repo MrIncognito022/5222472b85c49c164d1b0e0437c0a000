@@ -1,47 +1,59 @@
 <?php
 /**
- * Compact prop firm offers page.
+ * Reviews landing page.
  *
  * @package TradePulse
  */
 
 get_header();
 
-$firm_offers = array(
-	array( 'name' => 'FTMO', 'logo' => 'ftmo.svg', 'score' => '4.8', 'discount' => '10%', 'code' => 'MATCH', 'url' => 'https://ftmo.com/en/how-it-works/' ),
-	array( 'name' => 'The5ers', 'logo' => 'the5ers.svg', 'score' => '4.7', 'discount' => '15%', 'code' => 'MATCH', 'url' => 'https://the5ers.com/high-stakes/' ),
-	array( 'name' => 'FundedNext', 'logo' => 'fundednext.svg', 'score' => '4.5', 'discount' => '20%', 'code' => 'MATCH', 'url' => 'https://fundednext.com/package-comparison' ),
-	array( 'name' => 'Topstep', 'logo' => 'topstep.svg', 'score' => '4.1', 'discount' => '25%', 'code' => 'MATCH', 'url' => 'https://www.topstep.com/our-program' ),
-);
+$paged = max( 1, get_query_var( 'paged' ), get_query_var( 'page' ) );
+$reviews = new WP_Query( array(
+	'post_type'      => 'review',
+	'post_status'    => 'publish',
+	'posts_per_page' => 6,
+	'paged'          => $paged,
+) );
 ?>
 
-<main id="primary" class="firm-page firm-page--dark offer-page">
-	<section class="section firm-feed">
+<main id="primary" class="reviews-page">
+	<section class="section section--white">
 		<div class="wrap">
-			<div class="offer-showcase">
-				<header class="offer-showcase__header">
-					<h1><?php esc_html_e( 'Exclusive Prop Firm Offers', 'tradepulse' ); ?> <span aria-hidden="true">&#9830;</span></h1>
-					<div class="offer-showcase__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-				</header>
-
-				<div class="offer-grid">
-					<?php foreach ( $firm_offers as $index => $firm ) : ?>
-						<a class="offer-card offer-card--<?php echo esc_attr( $index + 1 ); ?>" href="<?php echo esc_url( $firm['url'] ); ?>" target="_blank" rel="noopener noreferrer">
-							<span class="offer-card__logo"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/firms/' . $firm['logo'] ); ?>" alt="<?php echo esc_attr( $firm['name'] ); ?>"></span>
-							<span class="offer-card__firm">
-								<strong><?php echo esc_html( $firm['name'] ); ?></strong>
-								<span class="offer-card__rating"><b><?php echo esc_html( $firm['score'] ); ?></b><i aria-label="Five star rating">&#9733;&#9733;&#9733;&#9733;&#9733;</i></span>
-							</span>
-							<span class="offer-card__deal">
-								<span><b><?php echo esc_html( $firm['discount'] ); ?></b> <?php esc_html_e( 'OFF', 'tradepulse' ); ?> <i aria-hidden="true">&#127873;</i></span>
-								<strong><?php echo esc_html( $firm['code'] ); ?> <i aria-hidden="true">&#9638;</i></strong>
-							</span>
-						</a>
-					<?php endforeach; ?>
+			<div class="section-heading reviews-page__heading">
+				<div class="reviews-page__heading-copy">
+					<span><?php esc_html_e( 'Trader Research', 'tradepulse' ); ?></span>
+					<h1><?php esc_html_e( 'Prop Firm', 'tradepulse' ); ?> <strong><?php esc_html_e( 'Reviews', 'tradepulse' ); ?></strong></h1>
+				</div>
+				<div class="reviews-page__heading-note">
+					<i aria-hidden="true"></i>
+					<p><?php esc_html_e( 'Clear, practical reviews of prop firm rules, platforms, payouts, and the complete trading experience.', 'tradepulse' ); ?></p>
 				</div>
 			</div>
 
-			<p class="offer-disclaimer"><?php esc_html_e( 'Example offer labels for layout preview. Confirm current discount terms with each firm before publishing affiliate promotions.', 'tradepulse' ); ?></p>
+			<?php if ( $reviews->have_posts() ) : ?>
+				<div class="grid grid--two reviews-page__grid">
+					<?php
+					while ( $reviews->have_posts() ) :
+						$reviews->the_post();
+						tradepulse_review_card();
+					endwhile;
+					?>
+				</div>
+
+				<?php
+				echo wp_kses_post( paginate_links( array(
+					'total'   => $reviews->max_num_pages,
+					'current' => $paged,
+					'type'    => 'list',
+				) ) );
+				?>
+			<?php else : ?>
+				<div class="empty-state">
+					<h2><?php esc_html_e( 'No reviews published yet.', 'tradepulse' ); ?></h2>
+					<p><?php esc_html_e( 'Published entries from Reviews in the WordPress dashboard will appear here automatically.', 'tradepulse' ); ?></p>
+				</div>
+			<?php endif; ?>
+			<?php wp_reset_postdata(); ?>
 		</div>
 	</section>
 </main>
