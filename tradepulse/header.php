@@ -13,14 +13,15 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php $tradepulse_header_markets = tradepulse_market_data(); ?>
 <header class="site-header">
 	<div class="site-header__top">
 		<div class="site-header__top-inner">
 			<span><?php esc_html_e( 'Market Brief', 'tradepulse' ); ?></span>
 			<span><?php echo esc_html( date_i18n( 'l, F j, Y' ) ); ?> <strong id="tradepulse-clock"><?php echo esc_html( date_i18n( 'H:i' ) ); ?></strong></span>
-			<span><?php esc_html_e( 'Stocks', 'tradepulse' ); ?> <strong data-market-value>+0.42%</strong></span>
-			<span><?php esc_html_e( 'Crypto', 'tradepulse' ); ?> <strong data-market-value>+1.18%</strong></span>
-			<span><?php esc_html_e( 'Gold', 'tradepulse' ); ?> <strong data-market-value>+0.31%</strong></span>
+			<span><?php esc_html_e( 'Stocks', 'tradepulse' ); ?> <strong data-market-change="stocks" class="<?php echo esc_attr( tradepulse_market_change_class( $tradepulse_header_markets['markets']['stocks']['change'] ) ); ?>"><?php echo esc_html( tradepulse_market_change( $tradepulse_header_markets['markets']['stocks']['change'] ) ); ?></strong></span>
+			<span><?php esc_html_e( 'Crypto', 'tradepulse' ); ?> <strong data-market-change="crypto" class="<?php echo esc_attr( tradepulse_market_change_class( $tradepulse_header_markets['markets']['crypto']['change'] ) ); ?>"><?php echo esc_html( tradepulse_market_change( $tradepulse_header_markets['markets']['crypto']['change'] ) ); ?></strong></span>
+			<span><?php esc_html_e( 'Gold ETF', 'tradepulse' ); ?> <strong data-market-change="gold" class="<?php echo esc_attr( tradepulse_market_change_class( $tradepulse_header_markets['markets']['gold']['change'] ) ); ?>"><?php echo esc_html( tradepulse_market_change( $tradepulse_header_markets['markets']['gold']['change'] ) ); ?></strong></span>
 		</div>
 	</div>
 	<div class="site-header__inner">
