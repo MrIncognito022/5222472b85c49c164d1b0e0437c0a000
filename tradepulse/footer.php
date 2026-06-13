@@ -26,10 +26,10 @@
         <div class="footer-column">
             <h2>Topics</h2>
             <ul>
-                <li><a href="<?php echo esc_url( home_url( '/?s=stocks' ) ); ?>">Stocks</a></li>
-                <li><a href="<?php echo esc_url( home_url( '/?s=crypto' ) ); ?>">Crypto</a></li>
-                <li><a href="<?php echo esc_url( home_url( '/?s=forex' ) ); ?>">Forex</a></li>
-                <li><a href="<?php echo esc_url( home_url( '/?s=commodities' ) ); ?>">Commodities</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/stocks/' ) ); ?>">Stocks</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/crypto/' ) ); ?>">Crypto</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/forex/' ) ); ?>">Forex</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/future/' ) ); ?>">Future</a></li>
             </ul>
         </div>
 

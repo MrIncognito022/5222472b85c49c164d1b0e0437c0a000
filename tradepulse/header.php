@@ -42,15 +42,20 @@
 				<span class="menu-toggle__icon" aria-hidden="true"></span>
 				<span><?php esc_html_e( 'Menu', 'tradepulse' ); ?></span>
 			</button>
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'primary',
-				'container'      => false,
-				'fallback_cb'    => 'tradepulse_fallback_menu',
-				'depth'          => 1,
-				'menu_id'        => 'primary-menu',
-			) );
-			?>
+			<ul id="primary-menu" class="primary-menu">
+				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'tradepulse' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/review/' ) ); ?>"><?php esc_html_e( 'Review', 'tradepulse' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/top-prop-firms/' ) ); ?>"><?php esc_html_e( 'Top Prop Firms', 'tradepulse' ); ?></a></li>
+				<li class="menu-item-has-children">
+					<a href="<?php echo esc_url( home_url( '/trading/' ) ); ?>"><?php esc_html_e( 'Trading', 'tradepulse' ); ?></a>
+					<ul class="sub-menu">
+						<li><a href="<?php echo esc_url( home_url( '/forex/' ) ); ?>"><?php esc_html_e( 'Forex', 'tradepulse' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/future/' ) ); ?>"><?php esc_html_e( 'Future', 'tradepulse' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/stocks/' ) ); ?>"><?php esc_html_e( 'Stocks', 'tradepulse' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/crypto/' ) ); ?>"><?php esc_html_e( 'Crypto', 'tradepulse' ); ?></a></li>
+					</ul>
+				</li>
+			</ul>
 		</nav>
 
 		<form role="search" method="get" class="header-search" action="<?php echo esc_url( home_url( '/' ) ); ?>">

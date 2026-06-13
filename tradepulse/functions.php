@@ -33,6 +33,56 @@ function tradepulse_setup() {
 add_action( 'after_setup_theme', 'tradepulse_setup' );
 
 /**
+ * Create the theme's core landing pages and post categories once.
+ */
+function tradepulse_create_content_pages() {
+    $setup_version = '1.0';
+
+    if ( get_option( 'tradepulse_content_setup_version' ) === $setup_version ) {
+        return;
+    }
+
+    $pages = array(
+        'trading'        => __( 'Trading', 'tradepulse' ),
+        'stocks'         => __( 'Stocks', 'tradepulse' ),
+        'forex'          => __( 'Forex', 'tradepulse' ),
+        'crypto'         => __( 'Crypto', 'tradepulse' ),
+        'future'         => __( 'Future', 'tradepulse' ),
+        'review'         => __( 'Review', 'tradepulse' ),
+        'top-prop-firms' => __( 'Top Prop Firms', 'tradepulse' ),
+    );
+
+    foreach ( $pages as $slug => $title ) {
+        if ( ! get_page_by_path( $slug ) ) {
+            wp_insert_post( array(
+                'post_title'  => $title,
+                'post_name'   => $slug,
+                'post_status' => 'publish',
+                'post_type'   => 'page',
+            ) );
+        }
+    }
+
+    $categories = array(
+        'stocks'         => __( 'Stocks', 'tradepulse' ),
+        'forex'          => __( 'Forex', 'tradepulse' ),
+        'crypto'         => __( 'Crypto', 'tradepulse' ),
+        'futures'        => __( 'Futures', 'tradepulse' ),
+        'review'         => __( 'Review', 'tradepulse' ),
+        'top-prop-firms' => __( 'Top Prop Firms', 'tradepulse' ),
+    );
+
+    foreach ( $categories as $slug => $name ) {
+        if ( ! term_exists( $slug, 'category' ) ) {
+            wp_insert_term( $name, 'category', array( 'slug' => $slug ) );
+        }
+    }
+
+    update_option( 'tradepulse_content_setup_version', $setup_version );
+}
+add_action( 'admin_init', 'tradepulse_create_content_pages' );
+
+/**
  * Register widget areas
  */
 function tradepulse_widgets_init() {
@@ -107,15 +157,6 @@ function tradepulse_card( $post_id = null, $large = false ) {
         </div>
     </article>
     <?php
-}
-
-function tradepulse_fallback_menu() {
-    $blog_url = get_option( 'page_for_posts' ) ? get_permalink( get_option( 'page_for_posts' ) ) : home_url( '/' );
-
-    echo '<ul id="primary-menu">';
-    echo '<li><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', 'tradepulse' ) . '</a></li>';
-    echo '<li><a href="' . esc_url( $blog_url ) . '">' . esc_html__( 'Blog', 'tradepulse' ) . '</a></li>';
-    echo '</ul>';
 }
 
 /**
