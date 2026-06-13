@@ -10,6 +10,7 @@ get_header();
 $top_firms = array(
 	array(
 		'name'     => 'FTMO',
+		'logo'     => 'ftmo.svg',
 		'label'    => __( 'Best established CFD choice', 'tradepulse' ),
 		'markets'  => __( 'Forex, indices, commodities, crypto CFDs', 'tradepulse' ),
 		'program'  => __( '1-Step or 2-Step', 'tradepulse' ),
@@ -21,6 +22,7 @@ $top_firms = array(
 	),
 	array(
 		'name'     => 'The5ers',
+		'logo'     => 'the5ers.svg',
 		'label'    => __( 'Best for long-term scaling', 'tradepulse' ),
 		'markets'  => __( 'Forex and CFDs', 'tradepulse' ),
 		'program'  => __( 'High Stakes and other models', 'tradepulse' ),
@@ -32,6 +34,7 @@ $top_firms = array(
 	),
 	array(
 		'name'     => 'FundedNext',
+		'logo'     => 'fundednext.svg',
 		'label'    => __( 'Best variety of challenge models', 'tradepulse' ),
 		'markets'  => __( 'CFDs and futures programs', 'tradepulse' ),
 		'program'  => __( 'Stellar models and Futures', 'tradepulse' ),
@@ -43,6 +46,7 @@ $top_firms = array(
 	),
 	array(
 		'name'     => 'Topstep',
+		'logo'     => 'topstep.svg',
 		'label'    => __( 'Best dedicated futures specialist', 'tradepulse' ),
 		'markets'  => __( 'Futures only', 'tradepulse' ),
 		'program'  => __( 'Trading Combine', 'tradepulse' ),
@@ -55,31 +59,25 @@ $top_firms = array(
 );
 ?>
 
-<main id="primary" class="firm-page">
-	<section class="ranking-intro">
-		<div class="wrap ranking-intro__grid">
-			<div><strong><?php esc_html_e( 'Rules', 'tradepulse' ); ?></strong><span><?php esc_html_e( 'Fair and understandable', 'tradepulse' ); ?></span></div>
-			<div><strong><?php esc_html_e( 'Payouts', 'tradepulse' ); ?></strong><span><?php esc_html_e( 'Practical withdrawal terms', 'tradepulse' ); ?></span></div>
-			<div><strong><?php esc_html_e( 'Platforms', 'tradepulse' ); ?></strong><span><?php esc_html_e( 'Tools traders can rely on', 'tradepulse' ); ?></span></div>
-			<div><strong><?php esc_html_e( 'Value', 'tradepulse' ); ?></strong><span><?php esc_html_e( 'Competitive account pricing', 'tradepulse' ); ?></span></div>
-		</div>
-	</section>
+<main id="primary" class="firm-page firm-page--dark">
+
 
 	<section class="section firm-rankings">
 		<div class="wrap">
-			<div class="section-heading">
+			<div class="section-heading firm-dashboard-heading">
 				<div>
+					<span class="firm-dashboard-heading__icon firm-dashboard-heading__icon--trophy" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v3h4v3c0 3.3-2.4 6-5.5 6.5A6 6 0 0 1 13 18v2h4v2H7v-2h4v-2a6 6 0 0 1-2.5-2.5A6.6 6.6 0 0 1 3 9V6h4zm10 5v5.2A4.3 4.3 0 0 0 19 9V8zM5 8v1a4.3 4.3 0 0 0 2 4.2V8z"/></svg></span>
 					<span class="eyebrow"><?php esc_html_e( 'Editor selections', 'tradepulse' ); ?></span>
 					<h2><?php esc_html_e( 'Best Prop Firm Coverage', 'tradepulse' ); ?></h2>
 				</div>
-				<p><?php esc_html_e( 'Our newest prop-firm guides and comparisons, presented in a clean ranked format.', 'tradepulse' ); ?></p>
+				<p><span class="live-dot"></span><?php esc_html_e( 'Rankings verified June 13, 2026', 'tradepulse' ); ?></p>
 			</div>
 
 			<div class="firm-ranking-list">
 				<?php foreach ( $top_firms as $index => $firm ) : ?>
 					<article class="firm-ranking-card firm-ranking-card--data firm-ranking-card--<?php echo esc_attr( $index + 1 ); ?>">
-						<div class="firm-ranking-card__rank"><span><?php esc_html_e( 'Rank', 'tradepulse' ); ?></span><strong><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></strong></div>
-						<div class="firm-ranking-card__identity"><span><?php echo esc_html( substr( $firm['name'], 0, 2 ) ); ?></span><div><small><?php echo esc_html( $firm['label'] ); ?></small><h3><?php echo esc_html( $firm['name'] ); ?></h3></div></div>
+						<div class="firm-ranking-card__rank"><span class="rank-trophy" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v3h4v3c0 3.3-2.4 6-5.5 6.5A6 6 0 0 1 13 18v2h4v2H7v-2h4v-2a6 6 0 0 1-2.5-2.5A6.6 6.6 0 0 1 3 9V6h4zm10 5v5.2A4.3 4.3 0 0 0 19 9V8zM5 8v1a4.3 4.3 0 0 0 2 4.2V8z"/></svg></span><strong><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></strong></div>
+						<div class="firm-ranking-card__identity"><span><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/firms/' . $firm['logo'] ); ?>" alt="<?php echo esc_attr( $firm['name'] ); ?>"></span><div><small><?php echo esc_html( $firm['label'] ); ?></small><h3><?php echo esc_html( $firm['name'] ); ?></h3><span class="mini-rating">★ ★ ★ ★ ★</span></div></div>
 						<div class="firm-ranking-card__content">
 							<p><?php echo esc_html( $firm['why'] ); ?></p>
 							<div class="firm-data-points">
