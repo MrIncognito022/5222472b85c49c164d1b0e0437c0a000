@@ -2,11 +2,28 @@
   var header = document.querySelector('.site-header');
   var menuToggle = document.querySelector('.menu-toggle');
   var navigation = document.querySelector('.main-navigation');
+  var headerTicking = false;
+  var headerIsScrolled = null;
 
   function updateHeader() {
     if (header) {
-      header.classList.toggle('is-scrolled', window.scrollY > 12);
+      var isScrolled = window.scrollY > 12;
+
+      if (isScrolled !== headerIsScrolled) {
+        header.classList.toggle('is-scrolled', isScrolled);
+        headerIsScrolled = isScrolled;
+      }
     }
+  }
+
+  function requestHeaderUpdate() {
+    if (headerTicking) { return; }
+
+    headerTicking = true;
+    window.requestAnimationFrame(function(){
+      updateHeader();
+      headerTicking = false;
+    });
   }
 
   if (menuToggle && navigation) {
@@ -88,13 +105,19 @@
       .catch(function(){ /* Keep the last server-rendered values. */ });
   }
 
-  // Run on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function(){ reveal(); updateHeader(); refreshMarketData(); });
-  } else {
-    reveal(); updateHeader(); refreshMarketData();
+  function useNativeSinglePostScroll() {
+    if (document.body && document.body.classList.contains('single-post')) {
+      document.documentElement.classList.add('single-post-native-scroll');
+    }
   }
 
-  window.addEventListener('scroll', updateHeader, { passive: true });
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ useNativeSinglePostScroll(); reveal(); updateHeader(); refreshMarketData(); });
+  } else {
+    useNativeSinglePostScroll(); reveal(); updateHeader(); refreshMarketData();
+  }
+
+  window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
   window.setInterval(refreshMarketData, 5 * 60 * 1000);
 })();

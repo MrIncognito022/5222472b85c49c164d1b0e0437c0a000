@@ -144,6 +144,10 @@ function tradepulse_assets() {
     wp_localize_script( 'tradepulse-theme', 'tradepulseMarket', array(
         'endpoint' => esc_url_raw( rest_url( 'tradepulse/v1/market-data' ) ),
     ) );
+
+    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+        wp_enqueue_script( 'comment-reply' );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'tradepulse_assets' );
 
