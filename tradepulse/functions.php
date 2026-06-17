@@ -138,9 +138,15 @@ function tradepulse_widgets_init() {
 add_action( 'widgets_init', 'tradepulse_widgets_init' );
 
 function tradepulse_assets() {
+    $theme_version = wp_get_theme()->get( 'Version' );
+    $style_path    = get_stylesheet_directory() . '/style.css';
+    $script_path   = get_template_directory() . '/assets/js/theme.js';
+    $style_version = file_exists( $style_path ) ? filemtime( $style_path ) : $theme_version;
+    $script_version = file_exists( $script_path ) ? filemtime( $script_path ) : $theme_version;
+
     wp_enqueue_style( 'tradepulse-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap', array(), null );
-    wp_enqueue_style( 'tradepulse-style', get_stylesheet_uri(), array( 'tradepulse-fonts' ), wp_get_theme()->get( 'Version' ) );
-    wp_enqueue_script( 'tradepulse-theme', get_template_directory_uri() . '/assets/js/theme.js', array(), wp_get_theme()->get( 'Version' ), true );
+    wp_enqueue_style( 'tradepulse-style', get_stylesheet_uri(), array( 'tradepulse-fonts' ), $style_version );
+    wp_enqueue_script( 'tradepulse-theme', get_template_directory_uri() . '/assets/js/theme.js', array(), $script_version, true );
     wp_localize_script( 'tradepulse-theme', 'tradepulseMarket', array(
         'endpoint' => esc_url_raw( rest_url( 'tradepulse/v1/market-data' ) ),
     ) );

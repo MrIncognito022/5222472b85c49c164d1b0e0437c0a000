@@ -128,34 +128,79 @@ $oil = $market_data['markets']['oil'];
 		</div>
 	</section>
 
-	<section id="playbooks" class="section section--white section--bordered">
+	<section id="playbooks" class="section section--white section--bordered home-offers">
 		<div class="wrap">
+			<?php
+			$tradepulse_offers = array(
+				array( 'name' => 'Alpha Capital', 'logo' => 'alpha-futures.svg', 'initials' => 'AC', 'rating' => '4.4', 'discount' => '40%', 'code' => 'MATCH40', 'class' => '1', 'url' => 'https://alphacapitalgroup.uk/', 'details' => 'Use this promo code at checkout for an evaluation discount on eligible Alpha Capital accounts.' ),
+				array( 'name' => 'Goat Funded', 'logo' => 'funded-trading-plus.svg', 'initials' => 'GFT', 'rating' => '4.3', 'discount' => '50%', 'code' => 'MATCH', 'class' => '2', 'url' => 'https://goatfundedtrader.com/', 'details' => 'Apply the code before payment to unlock the listed Goat Funded Trader promotional saving.' ),
+				array( 'name' => 'The5ers', 'logo' => 'the5ers.svg', 'initials' => '5', 'rating' => '4.7', 'discount' => '10%', 'code' => 'MATCH', 'class' => '3', 'url' => 'https://the5ers.com/', 'details' => 'Use the code on eligible The5ers programs and confirm current terms before purchasing.' ),
+				array( 'name' => 'FundingPips', 'logo' => 'fundingpips.svg', 'initials' => 'FP', 'rating' => '4.3', 'discount' => '20%', 'code' => 'MATCH', 'class' => '4', 'url' => 'https://fundingpips.com/', 'details' => 'Enter this coupon during checkout for a FundingPips discount where promotions are available.' ),
+				array( 'name' => 'Hola Prime', 'logo' => 'fundednext.svg', 'initials' => 'HP', 'rating' => '4.0', 'discount' => '50%', 'code' => 'MATCH50', 'class' => '2', 'url' => 'https://holaprime.com/', 'details' => 'Copy the code and check Hola Prime offer availability on the official checkout page.' ),
+				array( 'name' => 'E8 Markets', 'logo' => 'e8-markets.svg', 'initials' => 'E8', 'rating' => '4.8', 'discount' => '10%', 'code' => 'MATCH', 'class' => '1', 'url' => 'https://e8markets.com/', 'details' => 'Use this promo code for eligible E8 Markets plans and review the latest account rules.' ),
+				array( 'name' => 'FTMO', 'logo' => 'ftmo.svg', 'initials' => 'FT', 'rating' => '4.6', 'discount' => '15%', 'code' => 'TRADE15', 'class' => '3', 'url' => 'https://ftmo.com/', 'details' => 'Copy the code and verify whether the FTMO checkout currently accepts promotional codes.' ),
+				array( 'name' => 'FundedNext', 'logo' => 'fundednext.svg', 'initials' => 'FN', 'rating' => '4.5', 'discount' => '25%', 'code' => 'NEXT25', 'class' => '4', 'url' => 'https://fundednext.com/', 'details' => 'Apply the coupon to eligible FundedNext challenges and confirm current promotion terms.' ),
+				array( 'name' => 'Topstep', 'logo' => 'topstep.svg', 'initials' => 'TS', 'rating' => '4.6', 'discount' => '30%', 'code' => 'STEP30', 'class' => '1', 'url' => 'https://www.topstep.com/', 'details' => 'Use the code on eligible Topstep checkout flows and confirm the offer before purchase.' ),
+				array( 'name' => 'Alpha Futures', 'logo' => 'alpha-futures.svg', 'initials' => 'AF', 'rating' => '4.2', 'discount' => '35%', 'code' => 'ALPHA35', 'class' => '2', 'url' => 'https://alpha-futures.com/', 'details' => 'Copy this coupon for Alpha Futures and review account terms before starting an evaluation.' ),
+				array( 'name' => 'Funded Plus', 'logo' => 'funded-trading-plus.svg', 'initials' => 'FTP', 'rating' => '4.4', 'discount' => '20%', 'code' => 'PLUS20', 'class' => '3', 'url' => 'https://www.fundedtradingplus.com/', 'details' => 'Use this code for eligible Funded Trading Plus plans and verify current conditions.' ),
+				array( 'name' => 'E8 Markets Pro', 'logo' => 'e8-markets.svg', 'initials' => 'E8', 'rating' => '4.8', 'discount' => '12%', 'code' => 'E8MATCH', 'class' => '4', 'url' => 'https://e8markets.com/', 'details' => 'Copy the code for E8 Markets Pro offers and check the official site for live terms.' ),
+			);
+			?>
+
 			<div class="section-heading">
-				<h2>Editorial Focus</h2>
-				<p>A practical publishing desk for traders who want context, levels, and risk before they act.</p>
+				<h2><?php esc_html_e( 'Coupon and deals', 'tradepulse' ); ?></h2>
+				<p><?php esc_html_e( 'Current trading firm discounts and promo codes collected in one quick board.', 'tradepulse' ); ?></p>
 			</div>
 
-			<div class="focus-grid">
-				<article class="focus-card">
-					<span class="focus-card__label">Before the open</span>
-					<h3>Daily Market Briefs</h3>
-					<p>Session bias, key levels, major catalysts, and the conditions that would change the plan.</p>
-					<div class="focus-card__meta"><span>Pre-market</span><span>5 min read</span></div>
-				</article>
+			<div class="offer-showcase" data-offer-slider aria-label="<?php esc_attr_e( 'Exclusive trading discounts', 'tradepulse' ); ?>">
+				<header class="offer-showcase__header">
+					<div class="offer-showcase__controls" aria-label="<?php esc_attr_e( 'Offer slider controls', 'tradepulse' ); ?>">
+						<button class="offer-slider__button" type="button" data-offer-prev aria-label="<?php esc_attr_e( 'Previous offers', 'tradepulse' ); ?>">&lsaquo;</button>
+						<div class="offer-showcase__dots" data-offer-dots></div>
+						<button class="offer-slider__button" type="button" data-offer-next aria-label="<?php esc_attr_e( 'Next offers', 'tradepulse' ); ?>">&rsaquo;</button>
+					</div>
+				</header>
 
-				<article class="focus-card">
-					<span class="focus-card__label">During the week</span>
-					<h3>Chart Setups</h3>
-					<p>Trend structure, entry zones, invalidation points, and scenario notes for high-quality setups.</p>
-					<div class="focus-card__meta"><span>Technical</span><span>Levels first</span></div>
-				</article>
+				<div class="offer-grid" data-offer-track>
+					<?php foreach ( $tradepulse_offers as $offer_index => $offer ) : ?>
+						<article class="offer-card offer-card--<?php echo esc_attr( $offer['class'] ); ?>" tabindex="0" role="button" aria-label="<?php echo esc_attr( sprintf( __( 'View %s coupon details', 'tradepulse' ), $offer['name'] ) ); ?>" data-offer-card data-offer-name="<?php echo esc_attr( $offer['name'] ); ?>" data-offer-logo="<?php echo esc_url( get_template_directory_uri() . '/assets/images/firms/' . $offer['logo'] ); ?>" data-offer-initials="<?php echo esc_attr( $offer['initials'] ); ?>" data-offer-rating="<?php echo esc_attr( $offer['rating'] ); ?>" data-offer-discount="<?php echo esc_attr( $offer['discount'] ); ?>" data-offer-code="<?php echo esc_attr( $offer['code'] ); ?>" data-offer-url="<?php echo esc_url( $offer['url'] ); ?>" data-offer-details="<?php echo esc_attr( $offer['details'] ); ?>"<?php echo $offer_index >= 8 ? ' hidden' : ''; ?>>
+							<span class="offer-card__logo">
+								<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/firms/' . $offer['logo'] ); ?>" alt="">
+								<b aria-hidden="true"><?php echo esc_html( $offer['initials'] ); ?></b>
+							</span>
+							<div class="offer-card__firm">
+								<strong><?php echo esc_html( $offer['name'] ); ?></strong>
+								<span class="offer-card__rating"><b><?php echo esc_html( $offer['rating'] ); ?></b><i aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</i></span>
+							</div>
+							<div class="offer-card__deal">
+								<span><b><?php echo esc_html( $offer['discount'] ); ?></b> <?php esc_html_e( 'OFF', 'tradepulse' ); ?></span>
+								<strong><?php echo esc_html( $offer['code'] ); ?> <i aria-hidden="true"></i></strong>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
 
-				<article class="focus-card">
-					<span class="focus-card__label">Big picture</span>
-					<h3>Macro &amp; Risk Notes</h3>
-					<p>Rates, dollar, commodities, liquidity, volatility, and position-risk context behind larger moves.</p>
-					<div class="focus-card__meta"><span>Cross-asset</span><span>Risk aware</span></div>
-				</article>
+			<div class="coupon-modal" data-coupon-modal hidden>
+				<div class="coupon-modal__backdrop" data-coupon-close></div>
+				<div class="coupon-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="coupon-modal-title" tabindex="-1">
+					<button class="coupon-modal__close" type="button" data-coupon-close aria-label="<?php esc_attr_e( 'Close coupon details', 'tradepulse' ); ?>">&times;</button>
+					<h3 id="coupon-modal-title"><?php esc_html_e( 'Promo Code', 'tradepulse' ); ?></h3>
+					<div class="coupon-modal__card">
+						<div class="coupon-modal__brand">
+							<span class="coupon-modal__logo"><img data-coupon-logo alt=""><b data-coupon-initials aria-hidden="true"></b></span>
+							<strong data-coupon-name></strong>
+							<span class="coupon-modal__rating"><b data-coupon-rating></b><i aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</i></span>
+						</div>
+						<div class="coupon-modal__deal">
+							<div class="coupon-modal__discount"><span data-coupon-discount></span> <?php esc_html_e( 'OFF', 'tradepulse' ); ?></div>
+							<button class="coupon-modal__code" type="button" data-coupon-copy><span><?php esc_html_e( 'Code', 'tradepulse' ); ?></span><b data-coupon-code></b></button>
+							<p data-coupon-details></p>
+						</div>
+						<p class="coupon-modal__status" data-coupon-status><?php esc_html_e( 'Click the code to copy it to your clipboard.', 'tradepulse' ); ?></p>
+					</div>
+					<a class="coupon-modal__action" href="#" target="_blank" rel="noopener noreferrer" data-coupon-link><?php esc_html_e( 'Use Code at', 'tradepulse' ); ?> <span data-coupon-link-name></span> <i aria-hidden="true">&rarr;</i></a>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -181,14 +226,13 @@ $oil = $market_data['markets']['oil'];
 	<section class="section section--white">
 		<div class="wrap newsletter">
 			<div>
-				<h2>Create a better market routine.</h2>
-				<p>Use this space for your newsletter, premium research, or daily watchlist signup.</p>
+				<h2>Compare the top prop firms.</h2>
+				<p>Review leading funded trading programs, account sizes, profit splits, evaluation rules, and the best fit for your trading style.</p>
 			</div>
-			<a class="button button--primary" href="<?php echo esc_url( home_url('/') ); ?>?s=">Search the Archive</a>
+			<a class="button button--primary" href="<?php echo esc_url( home_url( '/top-prop-firms/' ) ); ?>">View Top Prop Firms</a>
 		</div>
 	</section>
 
 </main>
 
 <?php get_footer();
-
