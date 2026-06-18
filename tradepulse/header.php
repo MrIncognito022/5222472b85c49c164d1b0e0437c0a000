@@ -59,6 +59,7 @@
 				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'tradepulse' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/review/' ) ); ?>"><?php esc_html_e( 'Reviews', 'tradepulse' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/top-prop-firms/' ) ); ?>"><?php esc_html_e( 'Top Prop Firms', 'tradepulse' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/coupons-deals"/' ) ); ?>"><?php esc_html_e( 'Coupons & Deals', 'tradepulse' ); ?></a></li>
 				<li class="menu-item-has-children">
 					<a href="<?php echo esc_url( home_url( '/trading/' ) ); ?>"><?php esc_html_e( 'Trading', 'tradepulse' ); ?></a>
 					<ul class="sub-menu">
