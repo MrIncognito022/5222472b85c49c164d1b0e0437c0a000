@@ -217,6 +217,7 @@
     var details = modal.querySelector('[data-coupon-details]');
     var status = modal.querySelector('[data-coupon-status]');
     var copyButton = modal.querySelector('[data-coupon-copy]');
+    var copyLabel = modal.querySelector('[data-coupon-copy-label]');
     var link = modal.querySelector('[data-coupon-link]');
     var linkName = modal.querySelector('[data-coupon-link-name]');
     var lastTrigger = null;
@@ -240,15 +241,21 @@
 
     function openModal(card) {
       lastTrigger = card;
-      logo.src = card.dataset.offerLogo || '';
       logo.classList.remove('is-missing');
+      if (card.dataset.offerLogo) {
+        logo.src = card.dataset.offerLogo;
+      } else {
+        logo.removeAttribute('src');
+        logo.classList.add('is-missing');
+      }
       initials.textContent = card.dataset.offerInitials || '';
       name.textContent = card.dataset.offerName || '';
       rating.textContent = card.dataset.offerRating || '';
       discount.textContent = card.dataset.offerDiscount || '';
       code.textContent = card.dataset.offerCode || '';
       details.textContent = card.dataset.offerDetails || '';
-      status.textContent = 'Click the code to copy it to your clipboard.';
+      status.textContent = 'Ready to copy.';
+      if (copyLabel) { copyLabel.textContent = 'Copy Code'; }
       link.href = card.dataset.offerUrl || '#';
       linkName.textContent = card.dataset.offerName || '';
 
@@ -290,9 +297,11 @@
     if (copyButton) {
       copyButton.addEventListener('click', function(){
         copyText(code.textContent).then(function(){
-          status.textContent = 'Code copied to your clipboard.';
+          status.textContent = 'Copied to clipboard.';
+          if (copyLabel) { copyLabel.textContent = 'Copied'; }
         }).catch(function(){
-          status.textContent = 'Copy failed. Select and copy the code manually.';
+          status.textContent = 'Copy failed. Select the code manually.';
+          if (copyLabel) { copyLabel.textContent = 'Copy Code'; }
         });
       });
     }

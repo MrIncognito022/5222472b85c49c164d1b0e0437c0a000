@@ -10,8 +10,19 @@
 	<link rel="icon" type="image/png" href="/favicon.png">
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="google-site-verification" content="5n4PqmSczRIFwKT5M-nM1HhedV8jUGNGU1BWq1vXe7k" />
+	<!-- Google tag (gtag.js) -->
+
 	<?php wp_head(); ?>
 </head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B9C28S053R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B9C28S053R');
+</script>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <?php $tradepulse_header_markets = tradepulse_market_data(); ?>
@@ -46,7 +57,7 @@
 			</button>
 			<ul id="primary-menu" class="primary-menu">
 				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'tradepulse' ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/review/' ) ); ?>"><?php esc_html_e( 'Review', 'tradepulse' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/review/' ) ); ?>"><?php esc_html_e( 'Reviews', 'tradepulse' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/top-prop-firms/' ) ); ?>"><?php esc_html_e( 'Top Prop Firms', 'tradepulse' ); ?></a></li>
 				<li class="menu-item-has-children">
 					<a href="<?php echo esc_url( home_url( '/trading/' ) ); ?>"><?php esc_html_e( 'Trading', 'tradepulse' ); ?></a>

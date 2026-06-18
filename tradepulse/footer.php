@@ -36,10 +36,11 @@
         <div class="footer-column">
             <h2>Resources</h2>
             <ul>
-                <li><a href="<?php echo esc_url( home_url( '/?s=market+brief' ) ); ?>">Market Briefs</a></li>
-                <li><a href="<?php echo esc_url( home_url( '/?s=chart+setups' ) ); ?>">Chart Setups</a></li>
-                <li><a href="<?php echo esc_url( home_url( '/?s=risk' ) ); ?>">Risk Notes</a></li>
-                <li><a href="<?php echo esc_url( home_url( '/?s=macro' ) ); ?>">Macro Notes</a></li>
+                <li><a href="/contact-us">Contact Us
+                </a></li>
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/coupons-deals">Coupons and Deals</a></li>
+                <li><a href="/review">Reviews</a></li>
             </ul>
         </div>
 

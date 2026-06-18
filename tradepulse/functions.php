@@ -61,6 +61,417 @@ function tradepulse_register_review_post_type() {
 }
 add_action( 'init', 'tradepulse_register_review_post_type' );
 
+/**
+ * Register coupon posts for deals and promo codes.
+ */
+function tradepulse_register_coupon_post_type() {
+    register_post_type( 'coupon', array(
+        'labels' => array(
+            'name'               => __( 'Coupons', 'tradepulse' ),
+            'singular_name'      => __( 'Coupon', 'tradepulse' ),
+            'menu_name'          => __( 'Coupons', 'tradepulse' ),
+            'add_new'            => __( 'Add New', 'tradepulse' ),
+            'add_new_item'       => __( 'Add New Coupon', 'tradepulse' ),
+            'edit_item'          => __( 'Edit Coupon', 'tradepulse' ),
+            'new_item'           => __( 'New Coupon', 'tradepulse' ),
+            'view_item'          => __( 'View Coupon', 'tradepulse' ),
+            'all_items'          => __( 'All Coupons', 'tradepulse' ),
+            'search_items'       => __( 'Search Coupons', 'tradepulse' ),
+            'not_found'          => __( 'No coupons found.', 'tradepulse' ),
+            'not_found_in_trash' => __( 'No coupons found in Trash.', 'tradepulse' ),
+        ),
+        'public'       => true,
+        'show_in_rest' => false,
+        'menu_icon'    => 'dashicons-tickets-alt',
+        'has_archive'  => false,
+        'rewrite'      => array( 'slug' => 'coupon', 'with_front' => false ),
+        'supports'     => array( 'title', 'thumbnail', 'revisions' ),
+    ) );
+}
+add_action( 'init', 'tradepulse_register_coupon_post_type' );
+
+function tradepulse_coupon_fields() {
+    return array(
+        '_tradepulse_coupon_brand'     => array(
+            'label'       => __( 'Brand / Firm Name', 'tradepulse' ),
+            'type'        => 'text',
+            'required'    => true,
+            'placeholder' => __( 'E8 Markets', 'tradepulse' ),
+            'help'        => __( 'This appears as the small brand label on the coupon card.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_code'      => array(
+            'label'       => __( 'Coupon Code', 'tradepulse' ),
+            'type'        => 'text',
+            'required'    => true,
+            'placeholder' => __( 'MATCH30', 'tradepulse' ),
+            'help'        => __( 'This is revealed in the popup and copy button.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_discount'  => array(
+            'label'       => __( 'Discount', 'tradepulse' ),
+            'type'        => 'text',
+            'required'    => true,
+            'placeholder' => __( '30%', 'tradepulse' ),
+            'help'        => __( 'Write only the discount value, for example 30% or 10%.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_url'       => array(
+            'label'       => __( 'Offer Website URL', 'tradepulse' ),
+            'type'        => 'url',
+            'required'    => true,
+            'placeholder' => 'https://example.com',
+            'help'        => __( 'The popup button links to this website.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_image_url' => array(
+            'label'       => __( 'Logo / Coupon Image URL', 'tradepulse' ),
+            'type'        => 'url',
+            'required'    => false,
+            'placeholder' => 'https://example.com/logo.png',
+            'help'        => __( 'Optional. You can also use the Featured Image box.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_expires'   => array(
+            'label'       => __( 'Expiry Text', 'tradepulse' ),
+            'type'        => 'text',
+            'required'    => false,
+            'placeholder' => __( 'No Expires', 'tradepulse' ),
+            'help'        => __( 'Shown below the coupon button.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_rating'    => array(
+            'label'       => __( 'Rating', 'tradepulse' ),
+            'type'        => 'number',
+            'required'    => false,
+            'placeholder' => '4.7',
+            'help'        => __( 'Optional rating from 0 to 5.', 'tradepulse' ),
+        ),
+        '_tradepulse_coupon_details'   => array(
+            'label'       => __( 'Popup Details', 'tradepulse' ),
+            'type'        => 'textarea',
+            'required'    => true,
+            'placeholder' => __( 'Describe the offer, limits, account type, or important conditions.', 'tradepulse' ),
+            'help'        => __( 'This text appears inside the coupon popup.', 'tradepulse' ),
+        ),
+    );
+}
+
+function tradepulse_coupon_meta_keys() {
+    $keys = array();
+
+    foreach ( tradepulse_coupon_fields() as $key => $field ) {
+        $keys[ $key ] = $field['type'];
+    }
+
+    return $keys;
+}
+
+function tradepulse_coupon_meta_box() {
+    add_meta_box(
+        'tradepulse_coupon_details',
+        __( 'Coupon Information - Required Fields', 'tradepulse' ),
+        'tradepulse_coupon_meta_box_render',
+        'coupon',
+        'normal',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'tradepulse_coupon_meta_box' );
+
+function tradepulse_coupon_meta_box_render( $post ) {
+    wp_nonce_field( 'tradepulse_coupon_meta_save', 'tradepulse_coupon_meta_nonce' );
+    ?>
+    <div class="tradepulse-coupon-admin-fields">
+        <p class="tradepulse-coupon-admin-fields__note">
+            <?php esc_html_e( 'Fill these fields, publish the coupon, and it will appear automatically on the Coupon Code page. Use the post title as the main coupon title.', 'tradepulse' ); ?>
+        </p>
+        <?php foreach ( tradepulse_coupon_fields() as $key => $field ) : ?>
+            <?php
+            $value       = get_post_meta( $post->ID, $key, true );
+            $type        = $field['type'];
+            $is_required = ! empty( $field['required'] );
+            ?>
+            <div class="tradepulse-coupon-admin-field<?php echo $is_required ? ' is-required' : ''; ?><?php echo 'textarea' === $type ? ' is-wide' : ''; ?>">
+                <label for="<?php echo esc_attr( $key ); ?>">
+                    <?php echo esc_html( $field['label'] ); ?>
+                    <?php if ( $is_required ) : ?>
+                        <span><?php esc_html_e( 'Required', 'tradepulse' ); ?></span>
+                    <?php endif; ?>
+                </label>
+                <?php if ( 'textarea' === $type ) : ?>
+                    <textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" rows="5" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" <?php echo $is_required ? 'required' : ''; ?>><?php echo esc_textarea( $value ); ?></textarea>
+                <?php else : ?>
+                    <input
+                        id="<?php echo esc_attr( $key ); ?>"
+                        name="<?php echo esc_attr( $key ); ?>"
+                        type="<?php echo esc_attr( 'number' === $type ? 'number' : $type ); ?>"
+                        value="<?php echo esc_attr( $value ); ?>"
+                        placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>"
+                        <?php echo 'number' === $type ? 'min="0" max="5" step="0.1"' : ''; ?>
+                        <?php echo $is_required ? 'required' : ''; ?>
+                    >
+                <?php endif; ?>
+                <small><?php echo esc_html( $field['help'] ); ?></small>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <?php
+}
+
+function tradepulse_save_coupon_meta( $post_id ) {
+    if ( ! isset( $_POST['tradepulse_coupon_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['tradepulse_coupon_meta_nonce'] ) ), 'tradepulse_coupon_meta_save' ) ) {
+        return;
+    }
+
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    foreach ( tradepulse_coupon_meta_keys() as $key => $type ) {
+        $value = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : '';
+
+        if ( 'url' === $type ) {
+            $value = esc_url_raw( $value );
+        } elseif ( 'textarea' === $type ) {
+            $value = sanitize_textarea_field( $value );
+        } else {
+            $value = sanitize_text_field( $value );
+        }
+
+        if ( '' === $value ) {
+            delete_post_meta( $post_id, $key );
+        } else {
+            update_post_meta( $post_id, $key, $value );
+        }
+    }
+}
+add_action( 'save_post_coupon', 'tradepulse_save_coupon_meta' );
+
+function tradepulse_coupon_title_placeholder( $title, $post ) {
+    if ( 'coupon' === $post->post_type ) {
+        return __( 'Enter coupon title, e.g. Get 30% off E8 Markets plans', 'tradepulse' );
+    }
+
+    return $title;
+}
+add_filter( 'enter_title_here', 'tradepulse_coupon_title_placeholder', 10, 2 );
+
+function tradepulse_coupon_admin_assets( $hook ) {
+    $screen = get_current_screen();
+
+    if ( ! $screen || 'coupon' !== $screen->post_type || ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+        return;
+    }
+    ?>
+    <style>
+        .tradepulse-coupon-admin-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            padding: 6px 0 4px;
+        }
+
+        .tradepulse-coupon-admin-fields__note {
+            grid-column: 1 / -1;
+            margin: 0;
+            padding: 12px 14px;
+            border-left: 4px solid #00a884;
+            background: #f0fbf8;
+            color: #1d3f3a;
+            font-weight: 600;
+        }
+
+        .tradepulse-coupon-admin-field {
+            padding: 14px;
+            border: 1px solid #dcdcde;
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .tradepulse-coupon-admin-field.is-required {
+            border-color: #00a884;
+        }
+
+        .tradepulse-coupon-admin-field label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+            color: #1d2327;
+            font-weight: 700;
+        }
+
+        .tradepulse-coupon-admin-field label span {
+            padding: 2px 7px;
+            border-radius: 999px;
+            color: #007a60;
+            background: #e4f8f3;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .tradepulse-coupon-admin-field input,
+        .tradepulse-coupon-admin-field textarea {
+            width: 100%;
+            max-width: none;
+        }
+
+        .tradepulse-coupon-admin-field small {
+            display: block;
+            margin-top: 7px;
+            color: #646970;
+        }
+
+        .tradepulse-coupon-admin-field.is-wide {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 782px) {
+            .tradepulse-coupon-admin-fields {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('post');
+
+            if (!form) {
+                return;
+            }
+
+            var title = document.getElementById('title');
+
+            if (title) {
+                title.required = true;
+            }
+
+            form.addEventListener('submit', function (event) {
+                var firstInvalid = form.querySelector('.tradepulse-coupon-admin-field [required]:invalid, #title:invalid');
+
+                if (!firstInvalid) {
+                    return;
+                }
+
+                event.preventDefault();
+                firstInvalid.focus();
+                window.alert('<?php echo esc_js( __( 'Please fill all required coupon fields before publishing.', 'tradepulse' ) ); ?>');
+            });
+        });
+    </script>
+    <?php
+}
+add_action( 'admin_enqueue_scripts', 'tradepulse_coupon_admin_assets' );
+
+function tradepulse_create_coupon_code_page() {
+    if ( get_option( 'tradepulse_coupon_code_page_created' ) ) {
+        return;
+    }
+
+    if ( ! get_page_by_path( 'coupon-code' ) ) {
+        wp_insert_post( array(
+            'post_title'  => __( 'Coupon Code', 'tradepulse' ),
+            'post_name'   => 'coupon-code',
+            'post_status' => 'publish',
+            'post_type'   => 'page',
+        ) );
+    }
+
+    update_option( 'tradepulse_coupon_code_page_created', '1' );
+}
+add_action( 'admin_init', 'tradepulse_create_coupon_code_page' );
+
+function tradepulse_maybe_flush_coupon_rewrites() {
+    if ( '1.0' === get_option( 'tradepulse_coupon_rewrite_version' ) ) {
+        return;
+    }
+
+    flush_rewrite_rules();
+    update_option( 'tradepulse_coupon_rewrite_version', '1.0' );
+}
+add_action( 'admin_init', 'tradepulse_maybe_flush_coupon_rewrites' );
+
+/**
+ * Store contact form messages privately in the dashboard.
+ */
+function tradepulse_register_contact_message_post_type() {
+    register_post_type( 'contact_message', array(
+        'labels' => array(
+            'name'          => __( 'Contact Messages', 'tradepulse' ),
+            'singular_name' => __( 'Contact Message', 'tradepulse' ),
+            'menu_name'     => __( 'Contact Messages', 'tradepulse' ),
+            'all_items'     => __( 'All Messages', 'tradepulse' ),
+            'view_item'     => __( 'View Message', 'tradepulse' ),
+            'search_items'  => __( 'Search Messages', 'tradepulse' ),
+        ),
+        'public'              => false,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'menu_icon'           => 'dashicons-email-alt2',
+        'capability_type'     => 'post',
+        'exclude_from_search' => true,
+        'supports'            => array( 'title', 'editor', 'custom-fields' ),
+    ) );
+}
+add_action( 'init', 'tradepulse_register_contact_message_post_type' );
+
+/**
+ * Handle front-end contact form submissions.
+ */
+function tradepulse_handle_contact_form() {
+    $redirect = wp_get_referer() ? wp_get_referer() : home_url( '/contact-us/' );
+
+    if ( ! isset( $_POST['tradepulse_contact_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['tradepulse_contact_nonce'] ) ), 'tradepulse_contact_submit' ) ) {
+        wp_safe_redirect( add_query_arg( 'contact_status', 'error', $redirect ) . '#contact-form' );
+        exit;
+    }
+
+    $name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+    $email   = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+    $message = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
+
+    if (
+        '' === $name ||
+        '' === $email ||
+        '' === $message ||
+        ! is_email( $email ) ||
+        strlen( $name ) > 80 ||
+        strlen( $email ) > 120 ||
+        strlen( $message ) > 3000
+    ) {
+        wp_safe_redirect( add_query_arg( 'contact_status', 'error', $redirect ) . '#contact-form' );
+        exit;
+    }
+
+    $contact_page = get_page_by_path( 'contact-us' );
+    $comment_id = wp_insert_comment( array(
+        'comment_post_ID'      => $contact_page ? (int) $contact_page->ID : 0,
+        'comment_author'       => $name,
+        'comment_author_email' => $email,
+        'comment_content'      => $message,
+        'comment_type'         => 'comment',
+        'comment_approved'     => 0,
+        'comment_agent'        => 'TradePulse contact form',
+    ) );
+
+    if ( ! $comment_id ) {
+        wp_safe_redirect( add_query_arg( 'contact_status', 'error', $redirect ) . '#contact-form' );
+        exit;
+    }
+
+    wp_mail(
+        get_option( 'admin_email' ),
+        sprintf( __( 'New TradePulse contact message from %s', 'tradepulse' ), $name ),
+        sprintf( "Name: %s\nEmail: %s\n\n%s", $name, $email, $message ),
+        array( 'Reply-To: ' . $name . ' <' . $email . '>' )
+    );
+
+    wp_safe_redirect( add_query_arg( 'contact_status', 'success', $redirect ) . '#contact-form' );
+    exit;
+}
+add_action( 'admin_post_tradepulse_contact_submit', 'tradepulse_handle_contact_form' );
+add_action( 'admin_post_nopriv_tradepulse_contact_submit', 'tradepulse_handle_contact_form' );
+
 function tradepulse_maybe_flush_review_rewrites() {
     if ( '1.0' === get_option( 'tradepulse_simple_review_rewrite_version' ) ) {
         return;
